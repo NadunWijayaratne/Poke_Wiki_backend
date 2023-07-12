@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProductsModule } from './pokedata/pokedata.module';
-// import { PokeController } from './pokeData/pokedata.controller';
-// import { PokeService } from './pokeData/pokedata.service';
-// import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [

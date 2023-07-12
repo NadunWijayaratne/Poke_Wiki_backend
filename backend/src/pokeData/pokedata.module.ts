@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ProductsController } from './pokedata.controller';
-import { ProductsService } from './pokedata.service';
+import { PokedataController } from './pokedata.controller';
+import { PokedataService } from './pokedata.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PokedataSchema } from './pokedata.model';
 
@@ -8,7 +8,7 @@ import { PokedataSchema } from './pokedata.model';
   imports: [
     MongooseModule.forFeature([{ name: 'Pokedata', schema: PokedataSchema }]),
   ],
-  controllers: [ProductsController],
-  providers: [ProductsService],
+  controllers: [PokedataController],
+  providers: [PokedataService],
 })
 export class ProductsModule {}

@@ -7,56 +7,68 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
-import { ProductsService } from './pokedata.service';
+import { PokedataService } from './pokedata.service';
 
-@Controller('products')
-export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+@Controller('pokedata')
+export class PokedataController {
+  constructor(private readonly pokedataService: PokedataService) {}
 
   @Post()
   async addProduct(
-    @Body('title') prodTitle: string,
-    @Body('description') prodDesc: string,
-    @Body('price') prodPrice: number,
+    @Body('name') pokeName: string,
+    @Body('description') pokeDesc: string,
+    @Body('type') pokeType: string,
+    @Body('hp') pokeHp: number,
+    @Body('attack') pokeAtk: number,
+    @Body('defence') pokeDef: number,
   ) {
-    const generatedId = await this.productsService.insertProduct(
-      prodTitle,
-      prodDesc,
-      prodPrice,
+    const generatedId = await this.pokedataService.insertPokemon(
+      pokeName,
+      pokeDesc,
+      pokeType,
+      pokeHp,
+      pokeAtk,
+      pokeDef,
     );
     return { id: generatedId };
   }
 
   @Get()
-  async getAllProducts() {
-    const products = await this.productsService.getProducts();
-    return products;
+  async getallPokemon() {
+    const allpokemon = await this.pokedataService.getallPokemon();
+    return allpokemon;
   }
 
   @Get(':id')
-  getProduct(@Param('id') prodId: string) {
-    return this.productsService.getSingleProduct(prodId);
+  getPokemon(@Param('id') pokeId: string) {
+    return this.pokedataService.getsinglePokemon(pokeId);
   }
 
   @Patch(':id')
-  async updateProduct(
-    @Param('id') prodId: string,
-    @Body('title') prodTitle: string,
-    @Body('description') prodDesc: string,
-    @Body('price') prodPrice: number,
+  async updatePokemon(
+    @Param('id') pokeId: string,
+    @Body('name') pokeName: string,
+    @Body('description') pokeDesc: string,
+    @Body('type') pokeType: string,
+    @Body('hp') pokeHp: number,
+    @Body('attack') pokeAtk: number,
+    @Body('defence') pokeDef: number,
   ) {
-    await this.productsService.updateProduct(
-      prodId,
-      prodTitle,
-      prodDesc,
-      prodPrice,
+    await this.pokedataService.updatePokemon(
+      pokeId,
+      pokeName,
+      pokeDesc,
+      pokeType,
+      pokeHp,
+      pokeAtk,
+      pokeDef,
     );
     return null;
   }
 
   @Delete(':id')
-  async removeProduct(@Param('id') prodId: string) {
-    await this.productsService.deleteProduct(prodId);
+  async removePokemon(@Param('id') pokeId: string) {
+    await this.pokedataService.deletePokemon(pokeId);
     return null;
   }
 }

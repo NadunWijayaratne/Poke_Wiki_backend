@@ -3,76 +3,104 @@ import { Pokedata } from './pokedata.model';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 @Injectable()
-export class ProductsService {
+export class PokedataService {
   constructor(
-    @InjectModel('Pokedata') private readonly productModel: Model<Pokedata>,
+    @InjectModel('Pokedata') private readonly pokedataModel: Model<Pokedata>,
   ) {}
 
-  async insertProduct(title: string, desc: string, price: number) {
-    const newProduct = new this.productModel({
-      title: title,
+  private async findPokemon(id: string): Promise<Pokedata> {
+    let pokemon;
+    try {
+      pokemon = await this.pokedataModel.findById(id).exec();
+    } catch (error) {
+      throw new NotFoundException('Could not find pokemon.');
+    }
+    if (!pokemon) {
+      throw new NotFoundException('Could not find pokemon');
+    }
+    return pokemon;
+  }
+
+  async insertPokemon(
+    name: string,
+    desc: string,
+    type: string,
+    hp: number,
+    atk: number,
+    def: number,
+  ) {
+    const newProduct = new this.pokedataModel({
+      name: name,
       desc: desc,
-      price: price,
+      type: type,
+      hp: hp,
+      atk: atk,
+      def: def,
     });
     const result = await newProduct.save();
     console.log(result);
     return result.id as string;
   }
 
-  async getProducts() {
-    const products = await this.productModel.find().exec();
-    return products.map((prod) => ({
-      id: prod.id,
-      // title: prod.title,
-      // describe: prod.desc,
-      // price: prod.price,
+  async getallPokemon() {
+    const allpokemon = await this.pokedataModel.find().exec();
+    return allpokemon.map((poke) => ({
+      id: poke.id,
+      name: poke.name,
+      description: poke.desc,
+      type: poke.type,
+      hp: poke.hp,
+      atk: poke.atk,
+      def: poke.def,
     }));
   }
 
-  async getSingleProduct(productId: string) {
-    const product = await this.findProduct(productId);
+  async getsinglePokemon(pokeId: string) {
+    const pokemon = await this.findPokemon(pokeId);
     return {
-      id: product.id,
-      // title: product.title,
-      // description: product.desc,
-      // price: product.price,
+      id: pokemon.id,
+      name: pokemon.name,
+      description: pokemon.desc,
+      type: pokemon.type,
+      hp: pokemon.hp,
+      atk: pokemon.atk,
+      def: pokemon.def,
     };
   }
 
-  async updateProduct(
-    productId: string,
-    title: string,
-    desc: string,
-    price: number,
+  async updatePokemon(
+    pokeId: string,
+    name: string,
+    description: string,
+    type: string,
+    hp: number,
+    atk: number,
+    def: number,
   ) {
-    const updateProduct = await this.findProduct(productId);
+    const updatedPokemon = await this.findPokemon(pokeId);
 
-    // if (title) {
-    //   updateProduct.title = title;
-    // }
-    // if (desc) {
-    //   updateProduct.desc = desc;
-    // }
-    // if (price) {
-    //   updateProduct.price = price;
-    // }
-    updateProduct.save();
+    if (name) {
+      updatedPokemon.name = name;
+    }
+    if (description) {
+      updatedPokemon.desc = description;
+    }
+    if (type) {
+      updatedPokemon.type = type;
+    }
+    if (hp) {
+      updatedPokemon.hp = hp;
+    }
+    if (atk) {
+      updatedPokemon.atk = atk;
+    }
+    if (def) {
+      updatedPokemon.def = def;
+    }
+    updatedPokemon.save();
   }
 
-  async deleteProduct(prodId: string) {
-    await this.productModel.deleteOne({ _id: prodId }).exec();
-  }
-
-  private async findProduct(id: string): Promise<Pokedata> {
-    let product;
-    try {
-      product = await this.productModel.findById(id).exec();
-    } catch (error) {
-      throw new NotFoundException('Could not find product.');
-    }
-    if (!product) {
-      throw new NotFoundException('Could not find product.');
-    }
-    return product;
+  async deletePokemon(pokeId: string) {
+    await this.pokedataModel.deleteOne({ _id: pokeId }).exec();
   }
 }
