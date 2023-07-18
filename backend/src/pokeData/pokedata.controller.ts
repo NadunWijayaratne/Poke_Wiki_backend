@@ -7,6 +7,7 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
+
 import { PokedataService } from './pokedata.service';
 
 @Controller('pokedata')
@@ -19,8 +20,8 @@ export class PokedataController {
     @Body('description') pokeDesc: string,
     @Body('type') pokeType: string,
     @Body('hp') pokeHp: number,
-    @Body('attack') pokeAtk: number,
-    @Body('defence') pokeDef: number,
+    @Body('atk') pokeAtk: number,
+    @Body('def') pokeDef: number,
   ) {
     const generatedId = await this.pokedataService.insertPokemon(
       pokeName,

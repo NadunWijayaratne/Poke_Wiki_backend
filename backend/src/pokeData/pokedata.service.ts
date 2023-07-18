@@ -29,6 +29,9 @@ export class PokedataService {
     atk: number,
     def: number,
   ) {
+    console.log(
+      `Name :- ${name} ##### Desc :- ${desc} $$$ Type :- ${type} $$$ hp :- ${hp} $$$ atk :- ${atk} $$$ def :- ${def}`,
+    );
     const newProduct = new this.pokedataModel({
       name: name,
       desc: desc,
